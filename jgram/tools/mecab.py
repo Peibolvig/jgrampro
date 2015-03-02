@@ -1,19 +1,21 @@
-#
-# INCLUDE LICENSE, AUTHOR, DATE, ETC...HERE
-#
+"""
+jgram.tools.mecab
+~~~~~~~~~~~~~~~~~
 
-import sys
-import os
-curdir = os.path.dirname(os.path.abspath(__file__))
-parentdir = os.path.dirname(curdir)
-sys.path.insert(0, parentdir)
+Process japanese text and gives syntactic info of the elements
+
+    :Copyright: (c)2015 by Pablo Vázquez Rodríguez <pablo.vazquez.dev@gmail.com>
+                see AUTHORS for details
+    :License: GPLv3, see LICENSE or http://www.gnu.org/licenses/gpl-3.0.html
+              for more details
+"""
 
 import subprocess
 
-def jap_text_info(japanese_text):
+def jap_text_info(japanese_text, dictionary='ipadic'):
     print(subprocess.check_output(['pwd']))
     ps = subprocess.Popen(['echo', japanese_text], stdout=subprocess.PIPE)
-    output = subprocess.check_output(['mecab', '-d', os.path.join(parentdir, 'dic/unidic')], stdin=ps.stdout)
+    output = subprocess.check_output(['mecab', '-d', '../dic/'+dictionary], stdin=ps.stdout)
     ps.wait()
     print(output.decode())
 

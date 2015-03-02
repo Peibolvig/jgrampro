@@ -1,1 +1,55 @@
-External dependency --> Install mecab system wide
+TODO: Write this file (README) using ReStructuredText
+TODO: Fill the structure of this file (README)
+
+What is Jgram?
+
+Why Jgram?
+
+Where to get Jgram and how to install it?
+* (External dependencies --> mecab, dictionaries,...)
+* The dictionaries dicrc file is customized, so there are two possibilities:
+    - Use the jgram project dictionaries included
+    - Use the original dictionaries but replace the dicrc for the jgram ones
+
+How to use it?
+* (where are the docs)
+* (Where to get help, lists, mails, forums,...)
+
+How to contribute with the Jgram project?
+* (ways to contribute)-> (lists, mails, forums,...) 
+
+How to run test suite:
+Simply type: make test
+
+CREDITS:
+For authors and contributors, see the AUTHORS file
+
+DEPENDENCIES:
+You can grab the licenses for each of the dependencies inside the
+licenses folder [licenses/<dependency_name>]
+
+mecab v0.996:
+    * By Taku Kudo <taku@chasen.org> and Nippon Telegraph and Telephone Corporation
+    * Released under any of the GPL v2, the LGPL v2.1 or the
+      BSD Licenses.
+    * Sources: https://code.google.com/p/mecab/downloads/list
+
+mecab-ipadic v2.7.0-20070801:
+    * By Taku Kudo <taku@chasen.org>
+         Masayuki Asahara <masayu-a@is.aist-nara.ac.jp>
+         Yuji Matsumoto <matsu@is.aist-nara.ac.jp>
+         Nara Institute of Science and Technology
+    * Released under an open custom license by Nara Institute of Science and Technology
+    * Sources: https://code.google.com/p/mecab/downloads/list
+   
+mecab-juman v7.0-20130312:
+    * By Taku Kudo <taku@chasen.org> and University of Tokyo
+    * Released under a BSD License.
+    * Sources: https://code.google.com/p/mecab/downloads/list
+
+unidic-mecab v2.1.2:
+    * By The Unidic Consortium
+    * Released under any of the GPL v2, the LGPL v2.1 or the
+      BSD Licenses.
+    * Sources: http://sourceforge.jp/projects/unidic/releases/
+   

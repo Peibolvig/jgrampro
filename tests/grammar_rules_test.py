@@ -5,8 +5,10 @@ class TestGrammarRuleProcessor:
     gr = GrammarRuleProcessor()
 
     def test_placeholder(self):
+        self.gr.set_rule('〜は〜だ')
+
         # OK sentence
-        self.gr.set_data('〜は〜だ', '私は学生だ。')
+        self.gr.set_sentence('私は学生だ。')
         assert self.gr.process() == True
 
         # KO sentence
@@ -20,7 +22,18 @@ class TestGrammarRuleProcessor:
         # Empty sentence
         self.gr.set_sentence('')
         assert self.gr.process() == False
-    #    assert(gr.grammar_rule_processor('〜は(prt)〜だ(v)', '私は学生です。')) == True
+
+    def test_parenthesis(self):
+        # With description of grammatical items
+        self.gr.set_rule('〜は(prt)〜だ(v)')
+
+        self.gr.set_sentence('私は大きなだんごだ。')
+        assert self.gr.process() == True
+
+        self.gr.set_sentence('私は大きなだんごを食べた。')
+        assert self.gr.process() == False
+
+        # With deep description of grammatical items
     #    assert(gr.grammar_rule_processor('〜は(prt-bnd)〜だ(v-aux)', '私は学生です。')) == True
 
     def test_rule__wa_desu(self):

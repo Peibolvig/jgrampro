@@ -12,6 +12,6 @@ setup(
     license = '',
     version = '0.1',
     install_requires = '',
-    packages = [],
-    scripts = [],
+    packages = ['jgram', 'jgram.tools', 'jgram.conf'],
+    include_package_data=True,
 )

@@ -12,7 +12,7 @@ Process japanese text and gives syntactic info of the elements
 
 import subprocess
 
-############## THIS HAS TO BE HANDLED WITH INSTALLATION OF THE PROJECT BUT I
+# TODO: ############# THIS HAS TO BE HANDLED WITH INSTALLATION OF THE PROJECT BUT I
 ############# IMPORTING THE GLOBAL SETTINGS FILE BUT I DON'T KNOW HOW TO DO THAT YET
 import sys 
 import os 
@@ -43,7 +43,10 @@ def jap_text_info(japanese_text, dictionary='unidic'):
     ]
 
     processed_morphs_info = []
+    sentence_and_morphs_info = ['','']
     for current_morph_info in morphs_list:
+        if current_morph_info == 'EOS': 
+            break
         current_morph_info_list = []
         current_morph_info_list = current_morph_info.split('[#]') 
         processed_morphs_info.append(dict(zip(info_columns_name,current_morph_info_list[:])))
@@ -56,6 +59,8 @@ if __name__ == "__main__":
     import sys
     out_test = jap_text_info(sys.argv[1])
     print(out_test)
+
+
 
 
 # TODO: RELLENAR README

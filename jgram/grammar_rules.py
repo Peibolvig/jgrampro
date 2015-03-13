@@ -10,18 +10,30 @@ Implements the grammar analysis of sentences given the grammar rule
               for more details
 """
 import re
+import json
+
+##TODO: Ask for the "pythonic" way to solve the path
+import os
+import sys
+curdir = os.path.dirname(os.path.abspath(__file__))
+parentdir = os.path.dirname(curdir)
+PROJECT_DIR = parentdir+'/jgram'
+sys.path.insert(0, parentdir)
+#################################################
+
 from jgram.tools import mecab
 
 class GrammarRuleProcessor:
 
     def __init__(self, rule='', sentence='。'):
-        # Sentence_and_morphs_info contains the original sentence plus a
-        # list of dictionaries, where each dictionary will be a morpheme 
-        # with its info fields.
+        # Initialization
         self.set_sentence(sentence)
         self.rule = rule
         self.regexp_rule = ''
-   
+        self.definitions = dict()
+        with open(PROJECT_DIR+'/definitions.json','r') as json_definitions:
+            self.definitions = json.loads(json_definitions.read())
+
     def set_rule(self, text):
         """Sets the rule as a string, to check against a sentence
         """
@@ -69,17 +81,84 @@ class GrammarRuleProcessor:
 
         return rule_items
 
+    # Get list with the places where the PartOfSpeech (POS) match 
+    # within the original sentence.
+    def _get_grammar_item_positions_and_tag(self, pos_tag):
+        tag_and_positions = {'tag':'', 'positions':[]}
+
+        has_kana = False
+        # Getting the japanese version of the POS.
+        # This is a list because the POS can be generic.
+        # i.e.: (adj) will include any of (adj-i) and (adj-na)
+        if pos_tag[0] != '(':
+            has_kana = True
+            # If the pos_tag contains kana or kanji, get the text as
+            # replacement tag and the tag without () as pos_tag_name
+            tag_and_positions['tag'] = re.sub(r'\(.+\)$' ,'', pos_tag)
+            pos_tag_name = re.sub(r'^[^\(\)]+' ,'', pos_tag)
+            pos_tag_name = re.sub(r'\(|\)', '', pos_tag_name)
+        else: 
+            # Keep the original pos_tag and get tag without parenthesis
+            tag_and_positions['tag'] = pos_tag
+            pos_tag_name = re.sub(r'\(|\)', '', pos_tag)
+
+        # Get the japanese equivalent tags 
+        japanese_pos_taglist = self.definitions[pos_tag_name]
+
+        # Check POS within the sentence and build a list with their index
+        item_places_list = []
+        for index, sentence_info_morpheme in enumerate(self.sentence_info):
+            # Each tag is a list to test against each morpheme, because one 
+            # tag can include several tags. i.e.(adj) = (adj-i) + (adj-na)
+            is_tag_match = any(
+                                tag in sentence_info_morpheme.values() 
+                                for tag in japanese_pos_taglist
+                            )
+            # If rule has kana, check that kana matches within the sentence
+            if has_kana:
+                is_tag_match = tag_and_positions['tag'] == sentence_info_morpheme['surface']
+
+            if is_tag_match:
+                tag_and_positions['positions'].append(index)
+
+        return tag_and_positions
+
     def _check_rule_compliance(self, rule_items):
-        for item in rule_items:
-            # Check if item is a placeholder (〜), 
-            # a part-of-speech-only item (contains only parenthesis or
-            # contains hiragana, kanji,... (i.e.: も(prt) )
-            if item == '〜':
-               pass 
-            elif re.match('^\(.+?\)', item):
-                assert re.match('^\(.+?\)', item) == 'asdfasdf'
-            else:
-                pass
+        complies = False
+        # First check: Check the structure compliance
+        if(re.match(self.regexp_rule, self.original_sentence)):
+            # Second check: Checking the grammatical compliance
+            #
+            # Build a mock "sentence" where every char is 'x' respecting the 
+            # punctuation and putting the chars or single tags that match 
+            # with any of the items of the rule in their places. i.e.:
+            # *rule => 〜と(prt)(adj)〜
+            # *sentence => 私は小さいだんごと冷たいチェリイと飯を食べた。
+            # *x-sentence => xx(adj)xと(adj)xとxxxx。
+            symbols = ['空白', '補助記号', '記号']
+            mock_sentence = [
+                                info['surface'] 
+                                if info['pos1_macrotaxonomy'] in symbols else 'x' 
+                                for info in self.sentence_info
+                            ]
+
+            for rule_tag in rule_items:
+                if rule_tag != '〜':
+                    tag_and_positions = self._get_grammar_item_positions_and_tag(rule_tag)
+                    cur_tag = tag_and_positions['tag']
+                    cur_positions = tag_and_positions['positions']
+
+                    for position in cur_positions:
+                        mock_sentence[position] = cur_tag
+
+        mock_sentence = ''.join(mock_sentence)
+
+        # Check mock sentence against regexp of the rule
+        if(re.match(self.regexp_rule, mock_sentence)):
+            complies = True
+
+        return complies
+
 
     def process(self):
         """This method do the actual check of the rule against the sentence
@@ -93,11 +172,14 @@ class GrammarRuleProcessor:
             self._process_placeholder()
 
         # Check if the sentence complies with the rule
-        self._check_rule_compliance(rule_items_list)
+        complies_with_rule = self._check_rule_compliance(rule_items_list)
+
+        return complies_with_rule 
 
 
-        # Test the sentence against the regular expression and check if
-        # the sentence complies with the whole rule.
-        ## If every rule component gives a 'true' value, then the sentence
-        ## complies with the rule. Return true, else return false.
-        return True if re.match(self.regexp_rule, self.original_sentence) else False
+if __name__ == '__main__':
+    ### TO PUT A BREAKPOINT FOR DEBUG:  import ipdb; ipdb.set_trace()
+    gr = GrammarRuleProcessor()
+    gr.set_rule('〜は(prt)〜だ(v)')
+    gr.set_sentence('私は大きなだんごを食べた。')
+    gr.process()

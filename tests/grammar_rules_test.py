@@ -23,12 +23,19 @@ class TestGrammarRuleProcessor:
         self.gr.set_sentence('')
         assert self.gr.process() == False
 
+    def test__get_grammar_item_positions_and_tag(self):
+        self.gr.set_rule('〜は(prt)〜(adj)')
+        self.gr.set_sentence('私は小さいでも好きなだんごを食べた。')
+        assert self.gr._get_grammar_item_positions_and_tag('(adj)') == {'tag':'(adj)', 'positions':[2, 5]}
+        assert self.gr._get_grammar_item_positions_and_tag('は(prt)') == {'tag':'は', 'positions':[1]}
+
     def test_parenthesis(self):
         # With description of grammatical items
         self.gr.set_rule('〜は(prt)〜だ(v)')
 
         self.gr.set_sentence('私は大きなだんごだ。')
         assert self.gr.process() == True
+
 
         self.gr.set_sentence('私は大きなだんごを食べた。')
         assert self.gr.process() == False

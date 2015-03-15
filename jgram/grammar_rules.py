@@ -60,26 +60,41 @@ class GrammarRuleProcessor:
             return adict[match.group(0)]
         return rx.sub(one_xlat, text)
 
-    def _process_placeholder(self): 
-        # When the 〜 is at the beginning or ending, use '.+' regexp
-        self.regexp_rule = re.sub(r'^〜|〜$', r'.+', self.regexp_rule)
+    def _build_regexp(self, regexp): 
+        # If there is a  〜 at the beginning or ending, match any: '.+'
+        regexp_of_rule = re.sub(r'^〜|〜$', r'.+', regexp)
         
-        # When the 〜 is in between rule items, use '[。]+' 
-        self.regexp_rule = re.sub(r'〜', r'[^。]+', self.regexp_rule)
+        # If there is a 〜 between rule items, match any but dot '[^。]+' 
+        regexp_of_rule = re.sub(r'〜', r'[^。]+', regexp_of_rule)
 
-    def _process_parenthesis(self):
-        # The regexp can't contain the parenthesis of the rule, as it's
-        # only to do the first check: "Structure matches the sentence"
-        self.regexp_rule = re.sub(r'\(.+?\)', '', self.regexp_rule)
+        # The regexp can't contain parenthesis as it's only to do 
+        # the structure check: "Structure matches the sentence"
+        regexp_of_rule = re.sub(r'\(.+?\)', '', regexp_of_rule)
 
+        return regexp_of_rule
+
+    def _split_rule_items(self):
         # Get list of rule items
         trimmed_rule = re.sub(r'\s', '', self.rule)
 
-        # Split and get the items
+        # Split and get the grammatical units of the rule
         rule_items = re.split('(\(.+?\)|〜)', trimmed_rule)
-        rule_items = [i+j for i,j in zip(rule_items[::2], rule_items[1::2])]
+        rule_units_list = []
+        for item in rule_items:
+            if item == '':
+                continue
 
-        return rule_items
+            if item[0] == '(':
+                if last_item_type != 'parenthesis':
+                    rule_units_list[-1] = rule_units_list[-1] + item
+                else:
+                    rule_units_list.append(item)
+                last_item_type = 'parenthesis'
+            else:
+                rule_units_list.append(item)
+                last_item_type = 'kana_or_placeholder'
+
+        return rule_units_list
 
     # Get list with the places where the PartOfSpeech (POS) match 
     # within the original sentence.
@@ -90,20 +105,33 @@ class GrammarRuleProcessor:
         # Getting the japanese version of the POS.
         # This is a list because the POS can be generic.
         # i.e.: (adj) will include any of (adj-i) and (adj-na)
-        if pos_tag[0] != '(':
+
+        # If pos_tag is kana with parenthesis
+        if '(' in pos_tag and pos_tag[0] != '(':
             has_kana = True
-            # If the pos_tag contains kana or kanji, get the text as
-            # replacement tag and the tag without () as pos_tag_name
+            # If the pos_tag contains kana or kanji plus parenthesis, 
+            # get the text as replacement tag and the tag without () 
+            # as pos_tag_name
             tag_and_positions['tag'] = re.sub(r'\(.+\)$' ,'', pos_tag)
             pos_tag_name = re.sub(r'^[^\(\)]+' ,'', pos_tag)
             pos_tag_name = re.sub(r'\(|\)', '', pos_tag_name)
+        elif '(' not in pos_tag:
+            # If it's only kana/kanji
+            has_kana = True
+
+            # Keep the original pos_tag and get tag without parenthesis
+            tag_and_positions['tag'] = pos_tag
+            pos_tag_name = re.sub(r'\(|\)', '', pos_tag)
+            
         else: 
             # Keep the original pos_tag and get tag without parenthesis
             tag_and_positions['tag'] = pos_tag
             pos_tag_name = re.sub(r'\(|\)', '', pos_tag)
 
-        # Get the japanese equivalent tags 
-        japanese_pos_taglist = self.definitions[pos_tag_name]
+        japanese_pos_taglist = []
+        if '(' in pos_tag:
+            # Get the japanese equivalent tags for POS if rule requests them
+            japanese_pos_taglist = self.definitions[pos_tag_name]
 
         # Check POS within the sentence and build a list with their index
         item_places_list = []
@@ -125,6 +153,7 @@ class GrammarRuleProcessor:
 
     def _check_rule_compliance(self, rule_items):
         complies = False
+        mock_sentence = ''
         # First check: Check the structure compliance
         if(re.match(self.regexp_rule, self.original_sentence)):
             # Second check: Checking the grammatical compliance
@@ -165,11 +194,9 @@ class GrammarRuleProcessor:
         """
         # Process the rule to get the neccessary info to do the check
         rule_items_list = []
-        if '(' in self.rule:
-            rule_items_list = self._process_parenthesis()
+        rule_items_list = self._split_rule_items()
 
-        if '〜' in self.rule:
-            self._process_placeholder()
+        self.regexp_rule = self._build_regexp(self.regexp_rule)
 
         # Check if the sentence complies with the rule
         complies_with_rule = self._check_rule_compliance(rule_items_list)
@@ -180,6 +207,8 @@ class GrammarRuleProcessor:
 if __name__ == '__main__':
     ### TO PUT A BREAKPOINT FOR DEBUG:  import ipdb; ipdb.set_trace()
     gr = GrammarRuleProcessor()
-    gr.set_rule('〜は(prt)〜だ(v)')
-    gr.set_sentence('私は大きなだんごを食べた。')
+    gr.set_rule('〜は(prt)〜だ')
+    gr.set_sentence('私は大きなだんごを食べた。だ')
+    #gr.set_rule('〜は〜だ')
+    #gr.set_sentence('私は学生だ。')
     gr.process()

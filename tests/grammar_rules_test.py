@@ -28,8 +28,9 @@ class TestGrammarRuleProcessor:
         self.gr.set_sentence('私は小さいでも好きなだんごを食べた。')
         assert self.gr._get_grammar_item_positions_and_tag('(adj)') == {'tag':'(adj)', 'positions':[2, 5]}
         assert self.gr._get_grammar_item_positions_and_tag('は(prt)') == {'tag':'は', 'positions':[1]}
+        assert self.gr.process() == True
 
-    def test_parenthesis(self):
+    def test_rules_with_parenthesis(self):
         # With description of grammatical items
         self.gr.set_rule('〜は(prt)〜だ(v)')
 

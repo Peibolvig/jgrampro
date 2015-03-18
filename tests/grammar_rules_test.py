@@ -4,42 +4,100 @@ from jgram.grammar_rules import GrammarRuleProcessor
 class TestGrammarRuleProcessor:
     gr = GrammarRuleProcessor()
 
-    def test_placeholder(self):
-        self.gr.set_rule('〜は〜だ')
+    def test_multiple_replace(self):
+        mr = self.gr._multiple_replace
+        assert mr('abcdefghijklmnop', {'a':'XX', 'f':'F F','o':'OO'}) == 'XXbcdeF FghijklmnOOp'
 
-        # OK sentence
-        self.gr.set_sentence('私は学生だ。')
-        assert self.gr.process() == True
+    def test_build_regexp(self):
+        br = self.gr._build_regexp
+        assert br('') == ''
+        assert br('〜は(prt)〜だ(v)。') == '.+は\(prt\)[^。]+だ\(v\)。'
+        assert br('〜は〜だ(v)。') == '.+は[^。]+だ\(v\)。'
+        assert br('〜はだ(v)。') == '.+はだ\(v\)。'
+        assert br('〜は(prt)〜だ。') == '.+は\(prt\)[^。]+だ。'
+        assert br('は〜だ〜') == 'は[^。]+だ.+'
+        assert br('〜は(prt)(v)。') == '.+は\(prt\)\(v\)。'
 
-        # KO sentence
-        self.gr.set_sentence('源氏物語をやっと読み終わった。')
-        assert self.gr.process() == False
-    
-        # Tricky string with two sentences
-        self.gr.set_sentence('私は源氏物語をやっと読み終わった。飲んだ。')
-        assert self.gr.process() == False
-    
-        # Empty sentence
-        self.gr.set_sentence('')
-        assert self.gr.process() == False
+    def test_split_rule_items(self):
+        def sri(rule_to_test):
+            self.gr.set_rule(rule_to_test)
+            return self.gr._split_rule_items()
 
-    def test__get_grammar_item_positions_and_tag(self):
-        self.gr.set_rule('〜は(prt)〜(adj)')
-        self.gr.set_sentence('私は小さいでも好きなだんごを食べた。')
-        assert self.gr._get_grammar_item_positions_and_tag('(adj)') == {'tag':'(adj)', 'positions':[2, 5]}
-        assert self.gr._get_grammar_item_positions_and_tag('は(prt)') == {'tag':'は', 'positions':[1]}
-        assert self.gr.process() == True
+        assert sri('') == []
+        assert sri('〜は(prt)〜だ(v)。') == ['〜', 'は(prt)', '〜', 'だ(v)', '。']
+        assert sri('〜は〜だ(v)。') == ['〜', 'は', '〜', 'だ(v)', '。'] 
+        assert sri('〜はだ(v)。') == ['〜', 'はだ(v)', '。'] 
+        assert sri('〜は(prt)〜だ。') == ['〜', 'は(prt)', '〜', 'だ', '。'] 
+        assert sri('は〜だ〜') == ['は', '〜', 'だ', '〜']
+        assert sri('〜は(prt)(v)〜。') == ['〜', 'は(prt)', '(v)', '〜', '。']
+        
+    def test_get_grammar_item_positions_and_tag(self):
+        def gg(sentence, tag):
+            self.gr.set_sentence(sentence)
+            return self.gr._get_grammar_item_positions_and_tag(tag)
 
-    def test_rules_with_parenthesis(self):
-        # With description of grammatical items
-        self.gr.set_rule('〜は(prt)〜だ(v)')
+        sentence = '私は時計とめがねとベルトを無くした。これはあなたのケイタイです。'
+        assert gg('', '') == {'tag':'', 'positions':[]} 
+        assert gg(sentence, '') == {'tag':'', 'positions':[]} 
+        assert gg(sentence, 'は(prt)') == {'tag':'は(prt)', 'positions':[1, 12]} 
+        assert gg(sentence, 'です(vaux)') == {'tag':'です(vaux)', 'positions':[16]} 
+#        assert gg(sentence, 'と') == {'tag':'と', 'positions':[3, 5]} 
+#        assert gg(sentence, 'した') == {'tag':'した', 'positions':[3, 5]} 
+        assert gg(sentence, '(v)') == {'tag':'(v)', 'positions':[8, 9, 16]} 
+        
+    def test_check_rule_compliance(self):
+        def cr(rule, sentence):
+            self.gr.set_data(rule, sentence)
+            rule_items = self.gr._split_rule_items()
+            return self.gr._check_rule_compliance(rule_items)
 
-        self.gr.set_sentence('私は大きなだんごだ。')
-        assert self.gr.process() == True
+        sentence = '私は時計とめがねとベルトを無くした。これはあなたのケイタイです。' 
+        assert cr('', '') == True
+        assert cr('', sentence) == True
+        assert cr('〜は〜した', sentence) == True
+        assert cr('〜は〜です', sentence) == False
+
+#    def test_placeholder(self):
+#        self.gr.set_rule('〜は〜だ')
+#
+#        # ok sentence
+#        self.gr.set_sentence('私は学生だ。')
+#        assert self.gr.process() == True
+#
+#        # ko sentence
+#        self.gr.set_sentence('源氏物語をやっと読み終わった。')
+#        assert self.gr.process() == False
+#    
+#        # tricky string with two sentences
+#        self.gr.set_sentence('私は源氏物語をやっと読み終わった。飲んだ。')
+#        assert self.gr.process() == False
+#    
+#        # empty sentence
+#        self.gr.set_sentence('')
+#        assert self.gr.process() == False
 
 
-        self.gr.set_sentence('私は大きなだんごを食べた。')
-        assert self.gr.process() == False
+
+
+
+
+#    def test__get_grammar_item_positions_and_tag(self):
+#        self.gr.set_rule('〜は(prt)〜(adj)')
+#        self.gr.set_sentence('私は小さいでも好きなだんごを食べた。')
+#        assert self.gr._get_grammar_item_positions_and_tag('(adj)') == {'tag':'(adj)', 'positions':[2, 5]}
+#        assert self.gr._get_grammar_item_positions_and_tag('は(prt)') == {'tag':'は', 'positions':[1]}
+#        assert self.gr.process() == true
+#
+#    def test_rules_with_parenthesis(self):
+#        # with description of grammatical items
+#        self.gr.set_rule('〜は(prt)〜だ(v)')
+#
+#        self.gr.set_sentence('私は大きなだんごだ。')
+#        assert self.gr.process() == true
+#
+#
+#        self.gr.set_sentence('私は大きなだんごを食べた。')
+#        assert self.gr.process() == false
 
         # With deep description of grammatical items
     #    assert(gr.grammar_rule_processor('〜は(prt-bnd)〜だ(v-aux)', '私は学生です。')) == True

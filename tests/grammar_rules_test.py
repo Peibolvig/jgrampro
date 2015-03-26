@@ -11,9 +11,9 @@ class TestGrammarRuleProcessor:
     def test_build_regexp(self):
         br = self.gr._build_regexp
         assert br('') == ''
-        assert br('〜は(prt)〜だ(v)。') == '.+は\(prt\)[^。]+だ\(v\)。'
-        assert br('〜はだ(v)。') == '.+はだ\(v\)。'
-        assert br('〜は(prt)(v)。') == '.+は\(prt\)\(v\)。'
+        assert br('〜は(prt)〜だ(v)。') == '.+は(\(prt\))[^。]+だ(\(v-gen\)|\(v-aux\))。'
+        assert br('〜はだ(v)。') == '.+はだ(\(v-gen\)|\(v-aux\))。'
+        assert br('〜は(prt)(v)。') == '.+は(\(prt\))(\(v-gen\)|\(v-aux\))。'
 
     def test_split_rule_items(self):
         def sri(rule_to_test):

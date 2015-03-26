@@ -32,21 +32,21 @@ class GrammarRuleProcessor:
         self.regexp_rule = ''
         self.definitions = dict()
 
-        jap_rel = ''
-        gram_rel = ''
+        self.jap_rel = ''
+        self.gram_rel = ''
         with open(PROJECT_DIR+'/grammar/grammar_relationships.json') as gram_relationships:
-            gram_rel = json.loads(gram_relationships.read())
+            self.gram_rel = json.loads(gram_relationships.read())
 
         with open(PROJECT_DIR+'/grammar/jap_abbreviation_relationships.json') as jap_relationships:
-            jap_rel = json.loads(jap_relationships.read())
+            self.jap_rel = json.loads(jap_relationships.read())
 
         # Mecab returns japanese language only, so this is a "translation" of the grammar rules
         # defined in grammar_relationships.json into japanese, using 
         # jap_abbreviation_relationships.json file to do so
-        for gram_key in gram_rel.keys():
+        for gram_key in self.gram_rel.keys():
             temp_list = []
-            for gram_rel_item in gram_rel[gram_key]:
-                temp_list.append(jap_rel[gram_rel_item])
+            for gram_rel_item in self.gram_rel[gram_key]:
+                temp_list.append(self.jap_rel[gram_rel_item])
             self.definitions[gram_key] = temp_list[:]
 
     def set_rule(self, text):
@@ -79,16 +79,23 @@ class GrammarRuleProcessor:
         return rx.sub(one_xlat, text)
 
 
-    def _build_regexp(self, regexp): 
+    def _build_regexp(self, grammar_rule): 
         # If there is a  〜 at the beginning or ending, match any: '.+'
-        regexp_of_rule = re.sub(r'^〜|〜$', r'.+', regexp)
+        regexp_of_rule = re.sub(r'^〜|〜$', r'.+', grammar_rule)
         
         # If there is a 〜 between rule items, match any but dot '[^。]+' 
         regexp_of_rule = re.sub(r'〜', r'[^。]+', regexp_of_rule)
 
-        # Escape any parenthesis
-        regexp_of_rule = re.sub(r'\(', '\(', regexp_of_rule)
-        regexp_of_rule = re.sub(r'\)', '\)', regexp_of_rule)
+        # Process parenthesis
+        if '(' in grammar_rule:
+            # Get set of every parenthesis items in the rule
+            p_item = set(re.findall('\((.+?)\)', grammar_rule)) 
+
+            # Replace each one using the gram_rel relationship and
+            # merge them into the regexp
+            for item in p_item:
+                item_def_string = '\({}\)'.format('\)|\('.join(self.gram_rel[item]))
+                regexp_of_rule = re.sub(item, item_def_string, regexp_of_rule)
 
         return regexp_of_rule
 
@@ -269,5 +276,5 @@ if __name__ == '__main__':
     #gr.set_sentence('私はだ学生だ。')
     #gr.set_rule('〜は(prt)〜(v)〜だ(v)。')
     gr.set_sentence('これはあなたのケイタイです,私は時計とめがねとベルトを無くした。')
-    gr.set_rule('です(v)〜(v)')
+    gr.set_rule('です(v)〜(adj)asdf(adj-i), prueba (v) y (v-gen)')
     gr.process()

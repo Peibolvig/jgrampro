@@ -11,9 +11,9 @@ class TestGrammarRuleProcessor:
     def test_build_regexp(self):
         br = self.gr._build_regexp
         assert br('') == ''
-        assert br('〜は(prt)〜だ(v)。') == '.+は(\(prt\))[^。]+だ(\(v-gen\)|\(v-aux\))。'
-        assert br('〜はだ(v)。') == '.+はだ(\(v-gen\)|\(v-aux\))。'
-        assert br('〜は(prt)(v)。') == '.+は(\(prt\))(\(v-gen\)|\(v-aux\))。'
+        assert br('〜は(prt)〜だ(v)。') == '.+は(\(prt\))[^。]+だ(\(v\)|\(v-gen\)|\(v-aux\))。'
+        assert br('〜はだ(v)。') == '.+はだ(\(v\)|\(v-gen\)|\(v-aux\))。'
+        assert br('〜は(prt)(v)。') == '.+は(\(prt\))(\(v\)|\(v-gen\)|\(v-aux\))。'
 
     def test_split_rule_items(self):
         def sri(rule_to_test):
@@ -55,14 +55,16 @@ class TestGrammarRuleProcessor:
         def crc(rule, sentence):
             self.gr.set_data(rule, sentence)
             rule_items = self.gr._split_rule_items()
+            self.gr.regexp_rule = self.gr._build_regexp(self.gr.regexp_rule)
             return self.gr._check_rule_compliance(rule_items)
 
         sentence = '私はジョンです。彼女はテレサです。' 
         assert crc('', '') == True
         assert crc('', sentence) == True
-        assert crc('(v)。〜です(v)', sentence) == True
-        assert crc('(v)。〜です(v-aux)', sentence) == True
-        assert crc('(adj)。〜(adj-i)', sentence) == True
+        assert crc('(adj)。〜(adj-i)', '静か。食べ物をおいしいです。') == True
+        assert crc('〜(v)。〜です(v)', sentence) == True
+        assert crc('〜(v)。〜です(v-aux)', sentence) == True
+        assert crc('〜です(v)。〜です(v-aux)', sentence) == True
 
 #    def test_placeholder(self):
 #        self.gr.set_rule('〜は〜だ')

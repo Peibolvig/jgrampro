@@ -71,7 +71,7 @@ class GrammarRuleProcessor:
         self.set_sentence(sent)
 
 
-    # Recipe to replace multiple items in a string using a dict as replace guide
+    # Recipe to replace multiple items in a string using a dict as replacement guide
     def _multiple_replace(self, text, adict):
         rx = re.compile('|'.join(map(re.escape, adict)))
         def one_xlat(match):
@@ -95,7 +95,14 @@ class GrammarRuleProcessor:
             # merge them into the regexp
             for item in p_item:
                 item_def_string = '\({}\)'.format('\)|\('.join(self.gram_rel[item]))
-                regexp_of_rule = re.sub(item, item_def_string, regexp_of_rule)
+                # The items with more than one definition should include itself as an item
+                # i.e. v --> (v)|(v-gen)|(v-aux)
+                if len(self.gram_rel[item]) > 1:
+                    item_def_string = '\('+item+'\)|' + item_def_string
+
+                item_def_string = '(' + item_def_string + ')'
+
+                regexp_of_rule = re.sub('\('+item+'\)', item_def_string, regexp_of_rule)
 
         return regexp_of_rule
 
@@ -242,7 +249,7 @@ class GrammarRuleProcessor:
 
         # TO IMPLEMENT FOR PERFORMANCE - First check: Check the structure compliance
         #if(re.match(self.regexp_rule, self.original_sentence)):
-        
+
         # Second check: Checking the grammatical compliance
         mock_sentence = self._build_mock_sentence(rule_items)
 
@@ -264,6 +271,7 @@ class GrammarRuleProcessor:
 
         # Check if the sentence complies with the rule
         complies_with_rule = self._check_rule_compliance(rule_items_list)
+
         return complies_with_rule 
 
 
@@ -275,6 +283,6 @@ if __name__ == '__main__':
     #gr.set_rule('〜は(prt)だ(prt)')
     #gr.set_sentence('私はだ学生だ。')
     #gr.set_rule('〜は(prt)〜(v)〜だ(v)。')
-    gr.set_sentence('これはあなたのケイタイです,私は時計とめがねとベルトを無くした。')
-    gr.set_rule('です(v)〜(adj)asdf(adj-i), prueba (v) y (v-gen)')
+    gr.set_sentence('私はジョンです。彼女はテレサです。')
+    gr.set_rule('(v)。〜です(v)')
     gr.process()

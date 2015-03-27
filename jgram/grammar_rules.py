@@ -8,19 +8,12 @@ Implements the grammar analysis of sentences given the grammar rule
                 see AUTHORS for details
     :License: GPLv3, see LICENSE or http://www.gnu.org/licenses/gpl-3.0.html
               for more details
+    :Version: 0.1(alpha)
 """
 import re
 import json
 
-##TODO: Ask for the "pythonic" way to solve the path
-import os
-import sys
-curdir = os.path.dirname(os.path.abspath(__file__))
-parentdir = os.path.dirname(curdir)
-PROJECT_DIR = parentdir+'/jgram'
-sys.path.insert(0, parentdir)
-#################################################
-
+from jgram.conf import global_settings as gs
 from jgram.tools import mecab
 
 class GrammarRuleProcessor:
@@ -34,10 +27,10 @@ class GrammarRuleProcessor:
 
         self.jap_rel = ''
         self.gram_rel = ''
-        with open(PROJECT_DIR+'/grammar/grammar_relationships.json') as gram_relationships:
+        with open(gs.PROJECT_DIR+'/grammar/grammar_relationships.json') as gram_relationships:
             self.gram_rel = json.loads(gram_relationships.read())
 
-        with open(PROJECT_DIR+'/grammar/jap_abbreviation_relationships.json') as jap_relationships:
+        with open(gs.PROJECT_DIR+'/grammar/jap_abbreviation_relationships.json') as jap_relationships:
             self.jap_rel = json.loads(jap_relationships.read())
 
         # Mecab returns japanese language only, so this is a "translation" of the grammar rules
@@ -261,7 +254,7 @@ class GrammarRuleProcessor:
 
 
     def process(self):
-        """This method do the actual check of the rule against the sentence
+        """This method does the actual check of the rule against the sentence
         """
         # Process the rule to get the neccessary info to do the check
         rule_items_list = []

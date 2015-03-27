@@ -97,7 +97,7 @@ class TestGrammarRuleProcessor:
 #        assert self.gr._get_grammar_item_positions_and_tag('は(prt)') == {'tag':'は', 'positions':[1]}
 #        assert self.gr.process() == true
 #
-#    def test_rules_with_parenthesis(self):
+#    def test_rules_with_parentheses(self):
 #        # with description of grammatical items
 #        self.gr.set_rule('〜は(prt)〜だ(v)')
 #

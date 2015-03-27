@@ -86,9 +86,9 @@ class GrammarRuleProcessor:
         # If there is a 〜 between rule items, match any but dot '[^。]+' 
         regexp_of_rule = re.sub(r'〜', r'[^。]+', regexp_of_rule)
 
-        # Process parenthesis
+        # Process parentheses
         if '(' in grammar_rule:
-            # Get set of every parenthesis items in the rule
+            # Get set of every parentheses items in the rule
             p_item = set(re.findall('\((.+?)\)', grammar_rule)) 
 
             # Replace each one using the gram_rel relationship and
@@ -123,15 +123,15 @@ class GrammarRuleProcessor:
                 continue
 
             # Discern between:
-            # - Alone grammar rule between parenthesis: (x)
+            # - Alone grammar rule between parentheses: (x)
             # - Complete grammar rule item: です(v),...
             # - Symbols: 〜,...
             if item[0] == '(':
-                if last_item_type not in ['parenthesis', '', 'symbol']:
+                if last_item_type not in ['parentheses', '', 'symbol']:
                     rule_units_list[-1] = rule_units_list[-1] + item
                 else:
                     rule_units_list.append(item)
-                last_item_type = 'parenthesis'
+                last_item_type = 'parentheses'
             elif item[0] in symbols:
                 rule_units_list.append(item)
                 last_item_type = 'symbol'
@@ -147,7 +147,7 @@ class GrammarRuleProcessor:
     # being 0 if empty, and +1 for each alone grammar and +50 for kana/kanji 
     # in the pos tag:
     # - Empty: 0 
-    # - Alone grammar rule between parenthesis - (x): 1
+    # - Alone grammar rule between parentheses - (x): 1
     # - Complete grammar rule item - です(v),... : 51
     # - TO IMPLEMENT complex grammar - (v,com,5vsa): 3 
     # - TO IMPLEMENT complex kana+grammar - 無くし(v,com,5vsa): 53 
@@ -160,24 +160,24 @@ class GrammarRuleProcessor:
 
         # Keep the original pos_tag
         tag_and_positions['tag'] = pos_tag
-        tag_without_parenthesis = re.sub(r'\(.+\)$' ,'', pos_tag)
+        tag_without_parentheses = re.sub(r'\(.+\)$' ,'', pos_tag)
 
-        # If pos_tag is kana with parenthesis
+        # If pos_tag is kana with parentheses
         if '(' in pos_tag and pos_tag[0] != '(':
             has_kana = True
-            # If the pos_tag contains kana or kanji plus parenthesis, 
-            # get the text inside the parenthesis, ommiting them
+            # If the pos_tag contains kana or kanji plus parentheses, 
+            # get the text inside the parentheses, ommiting them
             # as pos_tag_gram
             pos_tag_gram = re.sub(r'^[^\(\)]+' ,'', pos_tag)
             pos_tag_gram = re.sub(r'\(|\)', '', pos_tag_gram)
             # Weight for xx(x) rule
-            # The parenthesis weigh +1 for each element
+            # The parentheses weigh +1 for each element
             pos_tag_gram_weight = len(re.split(r'[,-]', pos_tag_gram))
             kana_weight = 50
             tag_and_positions['weight'] = kana_weight + pos_tag_gram_weight
 
         elif pos_tag: 
-            # Keep the original pos_tag and get tag without parenthesis
+            # Keep the original pos_tag and get tag without parentheses
             pos_tag_gram = re.sub(r'\(|\)', '', pos_tag)
             pos_tag_gram_weight = len(re.split(r'[,-]', pos_tag_gram))
             tag_and_positions['weight'] = pos_tag_gram_weight
@@ -198,7 +198,7 @@ class GrammarRuleProcessor:
                             )
             # If rule has kana, check that kana matches within the sentence also
             if has_kana and is_tag_match:
-                is_tag_match = tag_without_parenthesis == sentence_info_morpheme['surface']
+                is_tag_match = tag_without_parentheses == sentence_info_morpheme['surface']
 
             if is_tag_match:
                 tag_and_positions['positions'].append(index)

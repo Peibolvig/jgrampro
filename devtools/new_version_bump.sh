@@ -2,10 +2,14 @@
 
 YEAR=$(date +'%Y')
 
+echo -n "Type version to apply: "
+read ver
+
 # Replace the copyright and version number in every .py file header
-if [ $# == 1 ]; then
-    perl -p -i -e "s/(?<=:Copyright: \(c\))[0-9]{4}(?= by Pablo)/$YEAR/g" `find ./ -name '../*.py'`
-    perl -p -i -e "s/(?<=:Version: ).+/$1/g" `find ./ -name '../*.py'`
+if [ -n "$ver" ]; then
+    perl -p -i -e "s/(?<=:Copyright: \(c\))[0-9]{4}(?= by Pablo)/$YEAR/g" `find ../ -name '*.py'`
+    perl -p -i -e "s/(?<=:Version: ).+/$ver/g" `find ../ -name '*.py'`
+    echo "Headers of jgram files are now set at '$ver' version and the year '$YEAR'"
 else
-    echo 'You should provide only 1 argument, the version to apply to the files'
+    echo "Version not provided. No changes were done."
 fi

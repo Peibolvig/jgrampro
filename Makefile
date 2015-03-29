@@ -39,7 +39,7 @@ setdevelop:
 	python ./setup.py develop
 
 test: 
-	@$(PYTEST) tests
+	@$(PYTEST) -vv tests
 
 version:
 	./devtools/new_version_bump.sh

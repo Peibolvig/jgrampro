@@ -36,7 +36,7 @@ setdevelop:
 	@$(ECHO) "/////////////////////////////////"
 	@$(ECHO) "To activate the environment type:"
 	@$(ECHO) "source env/bin/activate"
-	python ./setup.py develop
+	@$(PYTHON) ./setup.py develop
 
 test: 
 	@$(PYTEST) -vv tests

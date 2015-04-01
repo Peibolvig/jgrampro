@@ -270,12 +270,21 @@ class GrammarRuleProcessor:
 
 if __name__ == '__main__':
     ### TO PUT A BREAKPOINT FOR DEBUG:  import ipdb; ipdb.set_trace()
+    import sys
+
     gr = GrammarRuleProcessor()
     #gr.set_rule('〜は(prt)〜だ')
     #gr.set_sentence('私は大きなだんごを食べた。だ')
     #gr.set_rule('〜は(prt)だ(prt)')
     #gr.set_sentence('私はだ学生だ。')
     #gr.set_rule('〜は(prt)〜(v)〜だ(v)。')
-    gr.set_sentence('私はジョンです。彼女はテレサです。')
-    gr.set_rule('(v)。〜です(v)')
-    gr.process()
+    #gr.set_sentence('私はジョンです。彼女はテレサです。')
+    #gr.set_rule('(v)。〜です(v)')
+    if len(sys.argv) == 3:
+        gr.set_data(sys.argv[1], sys.argv[2])
+        if gr.process():
+            print('The sentence: ', sys.argv[2], ' complies with the rule: ', sys.argv[1])
+        else:
+            print('The sentence: ', sys.argv[2], ' DOES NOT comply with the rule: ', sys.argv[1])
+    else:
+       print('Usage:\npython grammar_rules.py "<rule>" "<sentence>"') 

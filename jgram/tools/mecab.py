@@ -34,7 +34,7 @@ def jap_text_info(japanese_text, dictionary='unidic'):
     info_columns_name = [
             'surface', 'pos1_macrotaxonomy', 'pos2_classword', 'pos3_smallclass',
             'pos4_detailedclass','conjugation_type','conjugated_form','orthography',
-            'orthograpy_base','goshu_origin'
+            'orthography_base','goshu_origin'
     ]
 
     processed_morphs_info = []
@@ -43,7 +43,7 @@ def jap_text_info(japanese_text, dictionary='unidic'):
         if current_morph_info == 'EOS': 
             break
         current_morph_info_list = []
-        current_morph_info_list = current_morph_info.split('[#]') 
+        current_morph_info_list = current_morph_info.split('[#]')
         processed_morphs_info.append(dict(zip(info_columns_name,current_morph_info_list[:])))
         sentence_and_morphs_info = [japanese_text, processed_morphs_info]
 

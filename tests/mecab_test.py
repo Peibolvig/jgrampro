@@ -24,7 +24,7 @@ def test_jap_text_info():
             'pos3_smallclass': '', 
             'conjugation_type': '', 
             'goshu_origin': '和', 
-            'orthograpy_base': '私'
+            'orthography_base': '私'
         }, 
         {
             'orthography': 'は', 
@@ -36,7 +36,7 @@ def test_jap_text_info():
             'pos3_smallclass': '', 
             'conjugation_type': '', 
             'goshu_origin': '和', 
-            'orthograpy_base': 'は'
+            'orthography_base': 'は'
         }, 
         {
             'orthography': 'ジョン', 
@@ -48,7 +48,7 @@ def test_jap_text_info():
             'pos3_smallclass': '人名', 
             'conjugation_type': '', 
             'goshu_origin': '固', 
-            'orthograpy_base': 'ジョン'
+            'orthography_base': 'ジョン'
         }, 
         {
             'orthography': 'です', 
@@ -60,7 +60,7 @@ def test_jap_text_info():
             'pos3_smallclass': '', 
             'conjugation_type': '助動詞-デス', 
             'goshu_origin': '和', 
-            'orthograpy_base': 'です'
+            'orthography_base': 'です'
         }, 
         {
             'orthography': '。', 
@@ -72,5 +72,5 @@ def test_jap_text_info():
             'pos3_smallclass': '', 
             'conjugation_type': '', 
             'goshu_origin': '記号', 
-            'orthograpy_base': '。'
+            'orthography_base': '。'
         }]]

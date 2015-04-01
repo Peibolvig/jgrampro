@@ -1,7 +1,7 @@
 ====================
 Tasks for Jgram v0.2
 ====================
-* Installation of mecab included in jgram instalation
+* Installation of mecab included in jgram installation
 * Add support for multiple-rule parentheses grammar
 * Add support to get grammar rules and text to test from one file each.
 
@@ -11,4 +11,4 @@ Tasks for every release
 * Complete README if there is anything new to add/modify
 * Complete documentation for the release new functionality and usage
 * Complete tests for the new code
-* Check code agains PEP8
+* Check code against PEP8

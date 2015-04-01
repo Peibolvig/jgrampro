@@ -13,15 +13,9 @@ Process japanese text and gives syntactic info of the elements
 
 import subprocess
 
-# TODO: ############# THIS HAS TO BE HANDLED WITH INSTALLATION OF THE PROJECT BUT I
-############# IMPORTING THE GLOBAL SETTINGS FILE BUT I DON'T KNOW HOW TO DO THAT YET
-import sys 
-import os 
+from jgram.conf import global_settings as gs
 
-# jgram parent dir
-curdir = os.path.dirname(os.path.abspath(__file__)) 
-PROJECT_DIR = os.path.dirname(curdir) 
-############################################################################
+PROJECT_DIR = gs.PROJECT_DIR 
 
 def jap_text_info(japanese_text, dictionary='unidic'):
     """Extract morphemes info from a given japanese sentence and return a list of
@@ -60,15 +54,3 @@ if __name__ == "__main__":
     import sys
     out_test = jap_text_info(sys.argv[1])
     print(out_test)
-
-
-
-
-# TODO: RELLENAR README
-# TODO: DOCUMENTAR
-# TODO: CREAR TESTS
-# TODO: CREAR FICHERO DE SETTINGS
-# TODO: FLEXIBILIZAR. Hacer que los campos de la info para cada morfema (en forma de diccionario)
-# se rellene de forma estándar aunque el diccionario utilizado sea diferente de unidic
-# TODO: Averiguar cómo crear un instalable del proyecto, que luego pueda importar desde cualquier
-#       fichero del proyecto haciendo--> import jgram.conf.... o lo que sea

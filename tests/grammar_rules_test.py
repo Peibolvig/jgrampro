@@ -10,7 +10,7 @@ Tests for the grammar_rules.py file methods
               for more details
     :Version: 0.1(alpha)
 """
-from jgram.grammar_rules import GrammarRuleProcessor
+from jgrampro.grammar_rules import GrammarRuleProcessor
 
 
 class TestGrammarRuleProcessor:

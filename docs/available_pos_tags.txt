@@ -2,7 +2,7 @@
 Part Of Speech Tags
 ===================
 
-These are the currently available POS tags jgram recognizes:
+These are the currently available POS tags jgrampro recognizes:
 
     +-----------+--------------------+--------------------------------------------------+
     | POS tag   | Meaning            | Observations                                     |

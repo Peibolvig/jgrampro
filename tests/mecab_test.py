@@ -10,7 +10,7 @@ Tests for the mecab wrapper
               for more details
     :Version: 0.1(alpha)
 """
-from jgram.tools import mecab
+from jgrampro.tools import mecab
 
 
 def test_jap_text_info():

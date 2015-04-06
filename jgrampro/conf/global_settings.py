@@ -1,8 +1,8 @@
 """
-jgram.conf.global_settings
+jgrampro.conf.global_settings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Global configuration data for jgram project
+Global configuration data for jgrampro project
 
     :Copyright: (c)2015 by Pablo Vázquez Rodríguez
                 <pablo.vazquez.dev@gmail.com>. See AUTHORS for details
@@ -13,7 +13,7 @@ Global configuration data for jgram project
 import sys 
 import os 
 
-# jgram parent dir
+# jgrampro parent dir
 curdir = os.path.dirname(os.path.abspath(__file__)) 
 PROJECT_DIR = os.path.dirname(curdir) 
 

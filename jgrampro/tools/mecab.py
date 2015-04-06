@@ -1,5 +1,5 @@
 """
-jgram.tools.mecab
+jgrampro.tools.mecab
 ~~~~~~~~~~~~~~~~~
 
 Process japanese text and gives syntactic info of the elements
@@ -13,7 +13,7 @@ Process japanese text and gives syntactic info of the elements
 
 import subprocess
 
-from jgram.conf import global_settings as gs
+from jgrampro.conf import global_settings as gs
 
 PROJECT_DIR = gs.PROJECT_DIR 
 

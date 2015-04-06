@@ -1,5 +1,5 @@
 """
-jgram.grammar_rules
+jgrampro.grammar_rules
 ~~~~~~~~~~~~~~~~~~~
 
 Implements the grammar analysis of sentences given the grammar rule
@@ -13,8 +13,8 @@ Implements the grammar analysis of sentences given the grammar rule
 import re
 import json
 
-from jgram.conf import global_settings as gs
-from jgram.tools import mecab
+from jgrampro.conf import global_settings as gs
+from jgrampro.tools import mecab
 
 
 class GrammarRuleProcessor:

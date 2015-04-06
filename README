@@ -1,41 +1,41 @@
 .. contents:: Table of contents
 
-==============
-What is Jgram?
-==============
-Jgram is an application to know which Japanese grammar rules a text complies with.
+=================
+What is Jgrampro?
+=================
+Jgrampro is an application to know which Japanese grammar rules a text complies with.
 
 Given a source of grammar rules and a Japanese text, will return which of the given rules the text uses.
 
-Right now, Jgram is in a very 'alpha' state, so is not yet implemented in a comfortable way and it's likely to have many bugs.
+Right now, Jgrampro is in a very 'alpha' state, so is not yet implemented in a comfortable way and it's likely to have many bugs.
 
-To try Jgram in this early state, go to `How to use it?`_
+To try Jgrampro in this early state, go to `How to use it?`_
 
-==========
-Why Jgram?
-==========
-Jgram is made because I want to be able to answer the next questions without effort, and focus in learn and not wasting much time choosing materials to study or review what I've learn:
+=============
+Why Jgrampro?
+=============
+Jgrampro is made because I want to be able to answer the next questions without effort, and focus in learn and not wasting much time choosing materials to study or review what I've learn:
     * ¿Can I read this text?
     * ¿Can I watch this movie without subtitles or with them in Japanese?
     * ¿What do I need to learn to read/watch this book/movie?
     * ¿Is this text suitable for a JLPT5/4/3/2/1 learner?
     * I need sentences to review my material but I'm already bored of the same texts every time, ¿is there a way to get new material without effort?
 
-This functionality could be amazing altogether with a vocabulary extractor (maybe Jgram could have one in the future).
+This functionality could be amazing altogether with a vocabulary extractor (maybe Jgrampro could have one in the future).
 
-My mid-term goal for Jgram is making it "good enough" to be functional.
+My mid-term goal for Jgrampro is making it "good enough" to be functional.
 
-=====================
-How to install Jgram?
-=====================
-Jgram is tested only on Linux (Fedora). It's likely to work on other Linux distributions as well.
+========================
+How to install Jgrampro?
+========================
+Jgrampro is tested only on Linux (Fedora). It's likely to work on other Linux distributions as well.
 Future support for Windows is planned, but it's not a top priority right now.
 
 Follow this steps to install:
     #. Clone the repository: 
         .. code::
 
-            git clone https://(TODO: fill git clone route)
+            git clone https://github.com/Peibolvig/jgrampro.git
 
     #. Install mecab system wide:
         **Fedora / CentOS / RedHat**
@@ -70,7 +70,7 @@ How to use it?
 ~~~~~~~~~~~~~~
 Simple example
 ~~~~~~~~~~~~~~
-Once you have Jgram installed, there is no fancy way to use it yet.
+Once you have Jgrampro installed, there is no fancy way to use it yet.
 Here is an example:
 
     The syntax is like: 
@@ -78,14 +78,14 @@ Here is an example:
 
     .. code::
 
-        cd jgram/
+        cd jgrampro/
         python grammar_rules.py "〜は(prt)〜だ(v-aux)" "私はだ学生だ。"
          
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 How to write grammar rules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-Grammar rules for Jgram have 2 kinds of elements:
+Grammar rules for Jgrampro have 2 kinds of elements:
     * **Morpheme info [ ex. です(v-aux) ]**: The morpheme to match and it's Part Of Speech(POS) tag. POS tags are always between parentheses.
         :Note: To see a list with the available POS tags, open *docs/available_pos_tags.txt*
     * **Placeholder char [ 〜 ]** : Indicates that one or more chars (whatever they are) must match in the place it is within the rule.
@@ -102,7 +102,7 @@ Running the test suite
 Just type **make test** in the root folder of the project.
 
 =========================================
-How to contribute with the Jgram project?
+How to contribute with the Jgrampro project?
 =========================================
 This is a personal project, but I share it because I guess that somebody could use it.
 The development depends on my free time to dedicate and many other personal stuff.

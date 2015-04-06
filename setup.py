@@ -24,7 +24,7 @@ setup(
     author_email='',
     url='',
     license='',
-    version='0.1',
+    version='0.1(alpha)',
     install_requires='',
     packages=['jgrampro', 'jgrampro.tools', 'jgrampro.conf'],
     include_package_data=True,

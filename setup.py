@@ -8,7 +8,7 @@ Setup configuration file to manage the jgrampro project
                 <pablo.vazquez.dev@gmail.com>. See AUTHORS for details
     :License: GPLv3, see LICENSE or http://www.gnu.org/licenses/gpl-3.0.html
               for more details
-    :Version: 0.1(alpha)
+    :Version: 0.1a
 """
 
 try:
@@ -24,7 +24,7 @@ setup(
     author_email='',
     url='',
     license='',
-    version='0.1(alpha)',
+    version='0.1a',
     install_requires='',
     packages=['jgrampro', 'jgrampro.tools', 'jgrampro.conf'],
     include_package_data=True,

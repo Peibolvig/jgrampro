@@ -87,7 +87,7 @@ How to write grammar rules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 Grammar rules for Jgrampro have 2 kinds of elements:
     * **Morpheme info [ ex. です(v-aux) ]**: The morpheme to match and it's Part Of Speech(POS) tag. POS tags are always between parentheses.
-        :Note: To see a list with the available POS tags, open *docs/available_pos_tags.txt*
+        :Note: To see a list with the available POS tags, open *docs/available_pos_tags.rst*
     * **Placeholder char [ 〜 ]** : Indicates that one or more chars (whatever they are) must match in the place it is within the rule.
 
 So, if we take the rule "〜は(prt)〜だ(v-aux)", we are saying that to comply with it, the sentence has to:
@@ -101,9 +101,9 @@ Running the test suite
 ~~~~~~~~~~~~~~~~~~~~~~
 Just type **make test** in the root folder of the project.
 
-=========================================
+============================================
 How to contribute with the Jgrampro project?
-=========================================
+============================================
 This is a personal project, but I share it because I guess that somebody could use it.
 The development depends on my free time to dedicate and many other personal stuff.
 
@@ -119,9 +119,9 @@ If you want to contribute to the project you can do it in many ways, here are so
 
 You can contact me in this email: pablo.vazquez.dev@gmail.com
 
-========
+=======
 Credits
-========
+=======
 For authors and contributors, see the AUTHORS file
 
 ============

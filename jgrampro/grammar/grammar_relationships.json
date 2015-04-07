@@ -1,0 +1,20 @@
+{
+    "adj":["adj-i", "adj-na"],
+    "adj-i":["adj-i"],
+    "adj-na":["adj-na"],
+    "adv":["adv"],
+    "conj":["conj"],
+    "int":["int"],
+    "n":["n"],
+    "pref":["pref"],
+    "prenom":["prenom"],
+    "pn":["pn"],
+    "prt":["prt"],
+    "punct":["punct"],
+    "spch":["spch"],
+    "suf":["suf"],
+    "sym":["sym"],
+    "v":["v-gen", "v-aux"],
+    "v-gen":["v-gen"],
+    "v-aux":["v-aux"]
+}

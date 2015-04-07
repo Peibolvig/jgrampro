@@ -11,7 +11,7 @@ PYTHON  := "$(ENVDIR)/bin/python"
 FIND    ?= find
 PYTEST  := py.test
 
-.PHONY: help setdevelop test
+.PHONY: help setdevelop test version
 
 help:
 		@$(ECHO) "Make sure you have virtualenv installed: pip install virtualenv"
@@ -21,6 +21,8 @@ help:
 		@$(ECHO) "Useful targets targets:"
 		@$(ECHO) " setdevelop  - Set the environment to begin to work"
 		@$(ECHO) " test        - Install test requirements and run the tests"
+		@$(ECHO) " version     - Change header of every file to reflect"
+		@$(ECHO) "               current year and provided version"
 		@$(ECHO) "------------------------------------------------------------"
 		@$(ECHO) "Housekeeping targets:"
 		@$(ECHO) " clean            - Remove intermediate, and generated files"
@@ -34,9 +36,13 @@ setdevelop:
 	@$(ECHO) "/////////////////////////////////"
 	@$(ECHO) "To activate the environment type:"
 	@$(ECHO) "source env/bin/activate"
+	@$(PYTHON) ./setup.py develop
 
 test: 
-	@$(PYTEST) tests
+	@$(PYTEST) -vv tests
+
+version:
+	./devtools/new_version_bump.sh
 
 .PHONY: clean maintainer-clean maintainerclean
 clean:

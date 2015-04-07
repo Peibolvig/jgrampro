@@ -1,34 +1,41 @@
-.. contents:: Table of contents
+.. .. contents:: Table of contents
 
-=================
-What is Jgrampro?
-=================
-Jgrampro is an application to know which Japanese grammar rules a text complies with.
+============
+Introduction
+============
+~~~~~~~~~~~~~~~~~
+What is JGramPro?
+~~~~~~~~~~~~~~~~~
+JGramPro is an application to know which Japanese grammar rules a text complies with.
 
 Given a source of grammar rules and a Japanese text, will return which of the given rules the text uses.
 
-Right now, Jgrampro is in a very 'alpha' state, so is not yet implemented in a comfortable way and it's likely to have many bugs.
+Right now, JGramPro is in a very 'alpha' state, so is not yet implemented in a comfortable way and it's likely to have many bugs.
 
-To try Jgrampro in this early state, go to `How to use it?`_
+To try JGramPro in this early state, go to `How to use JGramPro?`_
 
-=============
-Why Jgrampro?
-=============
-Jgrampro is made because I want to be able to answer the next questions without effort, and focus in learn and not wasting much time choosing materials to study or review what I've learn:
+~~~~~~~~~~~~~
+Why JGramPro?
+~~~~~~~~~~~~~
+JGramPro is made because I want to be able to answer the next questions without effort, and focus in learn and not wasting much time choosing materials to study or review what I've learn:
+
     * ¿Can I read this text?
     * ¿Can I watch this movie without subtitles or with them in Japanese?
     * ¿What do I need to learn to read/watch this book/movie?
     * ¿Is this text suitable for a JLPT5/4/3/2/1 learner?
     * I need sentences to review my material but I'm already bored of the same texts every time, ¿is there a way to get new material without effort?
 
-This functionality could be amazing altogether with a vocabulary extractor (maybe Jgrampro could have one in the future).
+This functionality could be amazing altogether with a vocabulary extractor (maybe JGramPro could have one in the future).
 
-My mid-term goal for Jgrampro is making it "good enough" to be functional.
+My mid-term goal for JGramPro is making it "good enough" to be functional.
 
-========================
-How to install Jgrampro?
-========================
-Jgrampro is tested only on Linux (Fedora). It's likely to work on other Linux distributions as well.
+==============
+Using JGramPro
+==============
+~~~~~~~~~~~~~~~~~~~~~~~~
+How to install JGramPro?
+~~~~~~~~~~~~~~~~~~~~~~~~
+JGramPro is tested only on Linux (Fedora). It's likely to work on other Linux distributions as well.
 Future support for Windows is planned, but it's not a top priority right now.
 
 Follow this steps to install:
@@ -38,6 +45,7 @@ Follow this steps to install:
             git clone https://github.com/Peibolvig/jgrampro.git
 
     #. Install mecab system wide:
+
         **Fedora / CentOS / RedHat**
 
         .. code::
@@ -64,16 +72,16 @@ Follow this steps to install:
             % su
             # make install
 
-==============
-How to use it?
-==============
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+How to use JGramPro?
+~~~~~~~~~~~~~~~~~~~~
+
 Simple example
 ~~~~~~~~~~~~~~
-Once you have Jgrampro installed, there is no fancy way to use it yet.
+Once you have JGramPro installed, dependencies included, there is no fancy way to use it yet.
 Here is an example:
 
-    The syntax is like: 
+    Syntax is like: 
         *python grammar_rules.py "<rule>" "<sentence>"*
 
     .. code::
@@ -85,9 +93,13 @@ Here is an example:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 How to write grammar rules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-Grammar rules for Jgrampro have 2 kinds of elements:
-    * **Morpheme info [ ex. です(v-aux) ]**: The morpheme to match and it's Part Of Speech(POS) tag. POS tags are always between parentheses.
-        :Note: To see a list with the available POS tags, open *docs/available_pos_tags.rst*
+Grammar rules for JGramPro have 2 kinds of elements:
+
+    * **Morpheme info [ ex. です(v-aux) ]**: 
+    
+        The morpheme to match and it's Part Of Speech(POS) tag. POS tags are always between parentheses.
+
+        :Note: See :ref:`Part Of Speech Tags` for a list with the available POS tags
     * **Placeholder char [ 〜 ]** : Indicates that one or more chars (whatever they are) must match in the place it is within the rule.
 
 So, if we take the rule "〜は(prt)〜だ(v-aux)", we are saying that to comply with it, the sentence has to:
@@ -101,14 +113,15 @@ Running the test suite
 ~~~~~~~~~~~~~~~~~~~~~~
 Just type **make test** in the root folder of the project.
 
-============================================
-How to contribute with the Jgrampro project?
-============================================
-This is a personal project, but I share it because I guess that somebody could use it.
-The development depends on my free time to dedicate and many other personal stuff.
+==========================================
+How to contribute to the JGramPro project?
+==========================================
+This is a personal project and I'm sharing it because I guess that somebody could use it.
+Development depends on my free time and many other personal stuff.
 
-If you want to contribute to the project you can do it in many ways, here are some examples of things you can do:
-    * Providing grammar rules (Grammar syntax is in early state, so it could change in the next releases). See `How to use it?`_ for more info on how to contribute with grammar rules.
+If you want to contribute to the project you're welcome. You can do so in many ways; here are some examples of what you can do:
+
+    * Providing grammar rules (Notice that grammar syntax is in early state, so it could change in the next releases). See `How to use JGramPro?`_ for more info on how to contribute with grammar rules.
     * Fix bugs
     * Beta test
     * If you implement some features you can share them
@@ -122,11 +135,13 @@ You can contact me in this email: pablo.vazquez.dev@gmail.com
 =======
 Credits
 =======
-For authors and contributors, see the AUTHORS file
+.. For authors and contributors, see the AUTHORS file
+.. include:: ../AUTHORS.rst
 
-============
+
+~~~~~~~~~~~~
 Dependencies
-============
+~~~~~~~~~~~~
 You can grab the licenses for each of the dependencies inside the
 licenses folder: **licenses/<dependency_name>**
 

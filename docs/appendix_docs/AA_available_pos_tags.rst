@@ -1,6 +1,5 @@
-===================
 Part Of Speech Tags
-===================
+~~~~~~~~~~~~~~~~~~~
 
 These are the currently available POS tags jgrampro recognizes:
 

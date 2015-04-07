@@ -8,3 +8,4 @@ dist
 *.idea
 *.swp
 auxiliary_files*
+docs/_build*

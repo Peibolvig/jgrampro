@@ -1,5 +1,6 @@
-AUTHORS
-=======
+~~~~~~~
+Authors
+~~~~~~~
 *Jgrampro is open to contributions*
 
 .. topic:: Pablo Vázquez Rodríguez

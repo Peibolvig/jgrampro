@@ -6,7 +6,9 @@ PYTHON3_PATH ?= "$(shell which python3)"
 DICS_DIR ?= $(CURDIR)/jgrampro/dic
 
 ECHO    ?= echo
-CAT     ?= cat
+WGET    ?= wget
+TAR     ?= tar
+CP      ?= cp
 RM      ?= rm -f
 PIP		:= "$(ENVDIR)/bin/pip"
 PYTHON  := "$(ENVDIR)/bin/python"
@@ -35,13 +37,38 @@ help:
 setdevelop:
 	virtualenv -p $(PYTHON3_PATH) ./env
 	$(PIP) -q install -r "$(CURDIR)/requirements/requirements_test.txt"
-	@$(ECHO) "Creating dictionary files..."
-	@$(CAT) $(DICS_DIR)/unidic/dic_chunks/matrix_* > $(DICS_DIR)/unidic/matrix.bin
-	@$(CAT) $(DICS_DIR)/unidic/dic_chunks/sys_* > $(DICS_DIR)/unidic/sys.dic
-	@$(CAT) $(DICS_DIR)/jumandic/dic_chunks/matrix_* > $(DICS_DIR)/jumandic/matrix.bin
-	@$(CAT) $(DICS_DIR)/jumandic/dic_chunks/sys_* > $(DICS_DIR)/jumandic/sys.dic
-	@$(CAT) $(DICS_DIR)/ipadic/dic_chunks/matrix_* > $(DICS_DIR)/ipadic/matrix.bin
-	@$(CAT) $(DICS_DIR)/ipadic/dic_chunks/sys_* > $(DICS_DIR)/ipadic/sys.dic
+	@$(ECHO) "Getting and patching dictionary files..."
+#
+#   Getting dictionaries	
+	@$(WGET) -q --show-progress -P $(CURDIR)/temp https://googledrive.com/host/\
+	0B_NO47cRQb6_fkJ1Z25MMHdUTDBqNHhsNU1JNzdXMGwxdF9qd3k3QWk3em5DRDJGREhNNVk/\
+	mecab-ipadic-2.7.0-20070801_bin.tar.gz
+	@$(WGET) -q --show-progress -P $(CURDIR)/temp https://googledrive.com/host/\
+	0B_NO47cRQb6_fkJ1Z25MMHdUTDBqNHhsNU1JNzdXMGwxdF9qd3k3QWk3em5DRDJGREhNNVk/\
+	mecab-jumandic-7.0-20130310_bin.tar.gz
+	@$(WGET) -q --show-progress -P $(CURDIR)/temp https://googledrive.com/host/\
+	0B_NO47cRQb6_fkJ1Z25MMHdUTDBqNHhsNU1JNzdXMGwxdF9qd3k3QWk3em5DRDJGREhNNVk/\
+	unidic-mecab-2.1.2_bin.tar.gz
+#
+#	Extracting dictionaries
+	@$(TAR) -zxf $(CURDIR)/temp/mecab-ipadic-2.7.0-20070801_bin.tar.gz \
+	-C $(CURDIR)/jgrampro/dic/
+	@$(TAR) -zxf $(CURDIR)/temp/mecab-jumandic-7.0-20130310_bin.tar.gz \
+	-C $(CURDIR)/jgrampro/dic/
+	@$(TAR) -zxf $(CURDIR)/temp/unidic-mecab-2.1.2_bin.tar.gz \
+	-C $(CURDIR)/jgrampro/dic/
+#
+#	Deleting temp directory
+	@$(RM) -r $(CURDIR)/temp/
+#
+#   Patching dictionaries
+	@$(CP) $(CURDIR)/jgrampro/dic/custom_files/ipadic/dicrc \
+	$(CURDIR)/jgrampro/dic/ipadic/
+	@$(CP) $(CURDIR)/jgrampro/dic/custom_files/jumandic/dicrc \
+	$(CURDIR)/jgrampro/dic/jumandic/
+	@$(CP) $(CURDIR)/jgrampro/dic/custom_files/unidic/dicrc \
+	$(CURDIR)/jgrampro/dic/unidic/
+#
 	@$(ECHO) "Done"
 	@$(ECHO) "/////////////////////////////////"
 	@$(ECHO) "To activate the environment type:"

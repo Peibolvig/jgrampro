@@ -40,6 +40,7 @@ Future support for Windows is planned, but it's not a top priority right now.
 
 Follow this steps to install:
     #. Clone the repository: 
+
         .. code::
 
             git clone https://github.com/Peibolvig/jgrampro.git
@@ -58,9 +59,13 @@ Follow this steps to install:
 
             sudo apt-get install mecab
 
-        **Install from source**
+        **Installation from source**
         
-        Download mecab-X.X.tar.gz from https://code.google.com/p/mecab/downloads/list and then:
+        Download mecab-X.X.tar.gz from: 
+        
+        https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE
+        
+        and then:
 
         .. code::
 
@@ -71,6 +76,12 @@ Follow this steps to install:
             % make check
             % su
             # make install
+
+    #. Prepare the environment (download dictionaries, patch dicrc,...):
+
+        .. code::
+
+           make setdevelop
 
 ~~~~~~~~~~~~~~~~~~~~
 How to use JGramPro?
@@ -151,7 +162,9 @@ licenses folder: **licenses/<dependency_name>**
         * Taku Kudo <taku@chasen.org>
         * Nippon Telegraph and Telephone Corporation
     :License: Released under any of the GPL v2, the LGPL v2.1 or the BSD Licenses.
-    :Sources: https://code.google.com/p/mecab/downloads/list
+    :Web: http://taku910.github.io/mecab/
+    :Sources: https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE
+    :Mirror: https://drive.google.com/uc?export=download&id=0B_NO47cRQb6_V0t2Ry0xMGU3Yzg
 
 .. topic:: mecab-ipadic v2.7.0-20070801
 
@@ -161,7 +174,9 @@ licenses folder: **licenses/<dependency_name>**
         * Yuji Matsumoto <matsu@is.aist-nara.ac.jp>
         * Nara Institute of Science and Technology
     :License: Released under an open custom license by Nara Institute of Science and Technology
-    :Sources: https://code.google.com/p/mecab/downloads/list
+    :Web: http://taku910.github.io/mecab/
+    :Sources: https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7MWVlSDBCSXZMTXM
+    :Mirror: https://drive.google.com/uc?export=download&id=0B_NO47cRQb6_TURCR29oX0h4dFE
 
 .. topic:: mecab-juman v7.0-20130312:
 
@@ -169,10 +184,14 @@ licenses folder: **licenses/<dependency_name>**
         * Taku Kudo <taku@chasen.org>
         * University of Tokyo
     :License: Released under a BSD License.
-    :Sources: https://code.google.com/p/mecab/downloads/list
+    :Web: http://taku910.github.io/mecab/
+    :Sources: https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7X2pESGlLREpxdXM
+    :Mirror: https://drive.google.com/uc?export=download&id=0B_NO47cRQb6_NHJXSm9vUndLY3c
 
 .. topic:: unidic-mecab v2.1.2:
 
     :Authors: The Unidic Consortium
     :License: Released under any of the GPL v2, the LGPL v2.1 or the BSD Licenses.
-    :Sources: http://sourceforge.jp/projects/unidic/releases/
+    :Web: http://unidic.sourceforge.jp/
+    :Sources: http://sourceforge.jp/projects/unidic/downloads/58338/unidic-mecab-2.1.2_src.zip
+    :Mirror: https://drive.google.com/uc?export=download&id=0B_NO47cRQb6_WjE3d1lPQkwxWHM

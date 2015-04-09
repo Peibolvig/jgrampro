@@ -9,10 +9,6 @@ dist
 *.swp
 auxiliary_files*
 docs/_build*
-jgrampro/dic/ipadic/matrix.bin
-jgrampro/dic/ipadic/sys.dic
-jgrampro/dic/jumandic/matrix.bin
-jgrampro/dic/jumandic/sys.dic
-jgrampro/dic/unidic/matrix.bin
-jgrampro/dic/unidic/sys.dic
-
+jgrampro/dic/ipadic*
+jgrampro/dic/jumandic*
+jgrampro/dic/unidic*

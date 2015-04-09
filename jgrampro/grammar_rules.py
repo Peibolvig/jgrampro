@@ -8,7 +8,7 @@ Implements the grammar analysis of sentences given the grammar rule
                 <pablo.vazquez.dev@gmail.com>. See AUTHORS for details
     :License: GPLv3, see LICENSE or http://www.gnu.org/licenses/gpl-3.0.html
               for more details
-    :Version: 0.1a
+    :Version: 0.1.1a
 """
 import re
 import json
